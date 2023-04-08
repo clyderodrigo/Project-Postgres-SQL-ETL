@@ -24,11 +24,18 @@ level varchar)
 
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS songs
-(song_id int PRIMARY KEY, 
+(song_id varchar PRIMARY KEY, 
 title varchar, 
 artist_id varchar, 
 year int, 
 duration float)
+""")
+                     
+song_table_insert = ("""
+    INSERT INTO songs
+    (song_id, title, artist_id, year, duration)
+    VALUES (%s, %s, %s, %s, %s)
+    ON CONFLICT (song_id) DO NOTHING;
 """)
 
 artist_table_create = ("""
@@ -48,15 +55,22 @@ day int,
 week int, 
 month int, 
 year int, 
-weekday int)
+weekday varchar)
+""")
+                     
+time_table_insert = ("""
+    INSERT INTO time
+    (start_time, hour, day, week, month, year, weekday)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (start_time) DO NOTHING;
 """)
 
 #DROP TABLES
-songplay_table_drop = ("DROP TABLE IF EXISTS songplays")
-user_table_drop = ("DROP TABLE IF EXISTS users")
-song_table_drop = ("DROP TABLE IF EXISTS songs")
-artist_table_drop = ("DROP TABLE IF EXISTS artists")
-time_table_drop = ("DROP TABLE IF EXISTS time")
+songplay_table_drop = ("DROP TABLE IF EXISTS songplays CASCADE")
+user_table_drop = ("DROP TABLE IF EXISTS users CASCADE")
+song_table_drop = ("DROP TABLE IF EXISTS songs CASCADE")
+artist_table_drop = ("DROP TABLE IF EXISTS artists CASCADE")
+time_table_drop = ("DROP TABLE IF EXISTS time CASCADE")
 
 #QUERIES LIST
 create_table_queries = [user_table_create, artist_table_create, song_table_create, time_table_create, songplay_table_create]
@@ -78,12 +92,7 @@ user_table_insert = ("""
     ON CONFLICT (user_id) DO NOTHING;
 """)
 
-song_table_insert = ("""
-    INSERT INTO songs
-    (song_id, title, artist_id, year, duration)
-    VALUES (%s, %s, %s, %s, %s)
-    ON CONFLICT (song_id) DO NOTHING;
-""")
+
 
 artist_table_insert = ("""
     INSERT INTO artists
@@ -93,12 +102,7 @@ artist_table_insert = ("""
 """)
 
 
-time_table_insert = ("""
-    INSERT INTO time
-    (start_time, hour, day, week, month, year, weekday)
-    VALUES (%s, %s, %s, %s, %s, %s, %s)
-    ON CONFLICT (start_time) DO NOTHING;
-""")
+
 
 # FIND SONGS
 
