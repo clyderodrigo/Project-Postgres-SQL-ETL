@@ -46,6 +46,13 @@ location varchar,
 latitude float, 
 longitude float)
 """)
+                       
+artist_table_insert = ("""
+    INSERT INTO artists
+    (artist_id, name, location, latitude, longitude)
+    VALUES (%s, %s, %s, %s, %s)
+    ON CONFLICT (artist_id) DO NOTHING;
+""")
 
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS time
@@ -91,17 +98,6 @@ user_table_insert = ("""
     VALUES (%s, %s, %s, %s, %s)
     ON CONFLICT (user_id) DO NOTHING;
 """)
-
-
-
-artist_table_insert = ("""
-    INSERT INTO artists
-    (artist_id, name, location, lattitude, longitude)
-    VALUES (%s, %s, %s, %s, %s)
-    ON CONFLICT (artist_id) DO NOTHING;
-""")
-
-
 
 
 # FIND SONGS
